@@ -82,14 +82,24 @@ class RocketRepo(
     ) {
         val map = Mappers.getMapper(RocketDTOToMap::class.java)
         val rocketList = response.map(map::map)
+        overrideDB(rocketList) {
+            callback(rocketList)
+            networkStatusLive.postValue(NetworkStatus.SUCCESS)
+        }
 
+    }
+
+    fun overrideDB(
+        rocketList: List<RocketEntity>,
+        onSaved: () -> Unit
+    ) {
         Completable.fromAction { rocketDAO.saveAll(rocketList) }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe(object : CompletableObserver {
                 override fun onSubscribe(d: Disposable) {}
 
-                override fun onComplete() = networkStatusLive.postValue(NetworkStatus.SUCCESS)
+                override fun onComplete() = onSaved()
 
                 override fun onError(error: Throwable) = onResponseError(error)
             })

@@ -18,7 +18,7 @@ import dagger.android.AndroidInjector
         RocketListModule::class
     ]
 )
-interface RocketListComponentInterface : AndroidInjector<RocketListFragment> {
+interface RocketListSubComponent : AndroidInjector<RocketListFragment> {
     @Subcomponent.Builder
     abstract class Builder : AndroidInjector.Builder<RocketListFragment>()
 }

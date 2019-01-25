@@ -1,5 +1,6 @@
 package com.andresako.rocketx.ui.base
 
+import com.andresako.rocketx.ui.ActivityBuilderModule
 import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
@@ -14,7 +15,7 @@ import javax.inject.Singleton
     ]
 )
 
-interface RocketXAppModule : AndroidInjector<RocketXApp> {
+interface RocketXAppComponent : AndroidInjector<RocketXApp> {
     @Component.Builder
     abstract class Builder : AndroidInjector.Builder<RocketXApp>()
 }

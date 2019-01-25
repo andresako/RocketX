@@ -5,7 +5,6 @@ import dagger.android.DaggerApplication
 
 class RocketXApp : DaggerApplication() {
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-        return DaggerRocketAppComponent.builder()
-            .create(this)
+        return DaggerRocketXAppComponent.builder().create(this)
     }
 }
