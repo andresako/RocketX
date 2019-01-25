@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent" android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:padding="8dp">
+
+    <TextView
+            android:id="@+id/rocketName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:textSize="16sp"
+            tools:text="Rocket Name"/>
+
+
+    <TextView
+            android:id="@+id/rocketCountry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Rocket Country"/>
+
+
+    <TextView
+            android:id="@+id/rocketEnginesCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Rocket Engines"/>
+
+</LinearLayout>

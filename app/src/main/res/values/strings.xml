@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">RocketX</string>
+    <string name="error">Something went wrong.</string>
+    <string name="engines">%1$d engines</string>
+</resources>
