@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +14,7 @@ import com.andresako.rocketx.data.NetworkStatus
 import com.andresako.rocketx.data.Status
 import com.andresako.rocketx.data.room.entity.RocketEntity
 import com.andresako.rocketx.ui.base.BaseFragment
+import com.andresako.rocketx.ui.launch.LaunchDetailsFragment
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.rocket_list_fragment.*
 import javax.inject.Inject
@@ -57,7 +59,7 @@ class RocketListFragment : BaseFragment() {
     }
 
     fun goToLaunch(rocketId: String, rocketName: String, description: String) {
-//        goToLaunchPage
+        mainCallback.goToFragment(LaunchDetailsFragment.newInstance(rocketId, rocketName, description))
     }
 
     fun updateRocketList(rockets: List<RocketEntity>) {
@@ -83,7 +85,7 @@ class RocketListFragment : BaseFragment() {
             Status.SUCCESS -> hideProgress()
             Status.FAILED -> {
                 hideProgress()
-//                container.displayErrorDialog(context!!, networkState.msg!!)
+                Toast.makeText(context, networkState.msg!!, Toast.LENGTH_SHORT)
             }
         }
 

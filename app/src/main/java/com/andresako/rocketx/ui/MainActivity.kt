@@ -1,6 +1,7 @@
 package com.andresako.rocketx.ui
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
@@ -9,7 +10,7 @@ import dagger.android.AndroidInjection
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : DaggerAppCompatActivity() {
+class MainActivity : DaggerAppCompatActivity(), MainCallback {
 
     private lateinit var navController: NavController
 
@@ -26,4 +27,15 @@ class MainActivity : DaggerAppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         return NavigationUI.navigateUp(navController, null)
     }
+
+    override fun goToFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.nav_host_fragment, fragment)
+            .addToBackStack(fragment.tag)
+            .commit()
+    }
+}
+
+interface MainCallback {
+    fun goToFragment(fragment: Fragment)
 }
