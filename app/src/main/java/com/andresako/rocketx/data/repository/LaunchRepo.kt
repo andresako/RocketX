@@ -33,12 +33,12 @@ interface LaunchRepoInterface {
 }
 
 class LaunchRepo(
-    val rocketXApi: RocketApiService,
-    val launchDAO: LaunchDAO
+    private val rocketXApi: RocketApiService,
+    private val launchDAO: LaunchDAO
 ) : LaunchRepoInterface {
 
-    val disposables = CompositeDisposable()
-    val networkStatusLive = MutableLiveData<NetworkStatus>()
+    private val disposables = CompositeDisposable()
+    private val networkStatusLive = MutableLiveData<NetworkStatus>()
 
     override fun clear() {
         disposables.clear()
@@ -58,7 +58,7 @@ class LaunchRepo(
         return networkStatusLive
     }
 
-    fun getOnlineLaunches(
+    private fun getOnlineLaunches(
         rocketId: String,
         callback: (launchList: List<LaunchEntity>) -> Unit
     ) {
@@ -72,7 +72,7 @@ class LaunchRepo(
         )
     }
 
-    fun getStoredLaunches(
+    private fun getStoredLaunches(
         rocketId: String,
         callback: (launchList: List<LaunchEntity>) -> Unit
     ) {
@@ -86,7 +86,7 @@ class LaunchRepo(
         )
     }
 
-    fun onSuccessOnline(
+    private fun onSuccessOnline(
         rocketId: String,
         response: List<LaunchDTO>,
         callback: (launches: List<LaunchEntity>) -> Unit
@@ -96,28 +96,28 @@ class LaunchRepo(
 
         overrideDB(launchList) {
             callback(filterResponse(rocketId, launchList))
-            networkStatusLive.postValue(NetworkStatus.SUCCESS)
+            networkStatusLive.postValue(NetworkStatus.DONE)
         }
     }
 
-    fun onSuccessStored(
+    private fun onSuccessStored(
         rocketId: String,
         response: List<LaunchEntity>,
         callback: (launchList: List<LaunchEntity>) -> Unit
     ) {
         if (response.isNotEmpty()) {
             callback(response)
-            networkStatusLive.postValue(NetworkStatus.SUCCESS)
+            networkStatusLive.postValue(NetworkStatus.DONE)
         } else
             getOnlineLaunches(rocketId, callback)
     }
 
-    fun onResponseError(error: Throwable) {
+    private fun onResponseError(error: Throwable) {
         error.printStackTrace()
         networkStatusLive.postValue(NetworkStatus.error(R.string.error))
     }
 
-    fun overrideDB(
+    private fun overrideDB(
         launchList: List<LaunchEntity>,
         onSaved: () -> Unit
     ) {
@@ -133,7 +133,7 @@ class LaunchRepo(
             })
     }
 
-    fun filterResponse(
+    private fun filterResponse(
         rocketId: String,
         launchList: List<LaunchEntity>
     ): List<LaunchEntity> {

@@ -9,7 +9,7 @@ data class NetworkStatus constructor(
 ) {
 
     companion object {
-        val SUCCESS = NetworkStatus(Status.SUCCESS)
+        val DONE = NetworkStatus(Status.DONE)
         val RUNNING = NetworkStatus(Status.RUNNING)
 
         fun error(@StringRes msg: Int) = NetworkStatus(Status.FAILED, msg)
@@ -18,6 +18,6 @@ data class NetworkStatus constructor(
 
 enum class Status {
     RUNNING,
-    SUCCESS,
+    DONE,
     FAILED
 }

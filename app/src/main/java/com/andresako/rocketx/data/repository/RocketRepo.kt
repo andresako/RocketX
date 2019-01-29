@@ -31,12 +31,12 @@ interface RocketRepoInterface {
 }
 
 class RocketRepo(
-    val rocketXApi: RocketApiService,
-    val rocketDAO: RocketDAO
+    private val rocketXApi: RocketApiService,
+    private val rocketDAO: RocketDAO
 ) : RocketRepoInterface {
 
-    val disposables = CompositeDisposable()
-    val networkStatusLive = MutableLiveData<NetworkStatus>()
+    private val disposables = CompositeDisposable()
+    private val networkStatusLive = MutableLiveData<NetworkStatus>()
 
     override fun clear() {
         disposables.clear()
@@ -53,7 +53,7 @@ class RocketRepo(
         return networkStatusLive
     }
 
-    fun getOnlineRockets(callback: (rocketList: List<RocketEntity>) -> Unit) {
+    private fun getOnlineRockets(callback: (rocketList: List<RocketEntity>) -> Unit) {
         disposables.add(
             rocketXApi.getRockets()
                 .subscribeOn(Schedulers.io())
@@ -64,9 +64,9 @@ class RocketRepo(
         )
     }
 
-    fun getStoredRockets(callback: (rocketList: List<RocketEntity>) -> Unit) {
+    private fun getStoredRockets(callback: (rocketList: List<RocketEntity>) -> Unit) {
         disposables.add(
-            rocketDAO.getAllAsync()
+            rocketDAO.getRockets()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -76,7 +76,7 @@ class RocketRepo(
         )
     }
 
-    fun onSuccessOnline(
+    private fun onSuccessOnline(
         response: List<RocketDTO>,
         callback: (rockets: List<RocketEntity>) -> Unit
     ) {
@@ -84,12 +84,12 @@ class RocketRepo(
         val rocketList = response.map(map::map)
         overrideDB(rocketList) {
             callback(rocketList)
-            networkStatusLive.postValue(NetworkStatus.SUCCESS)
+            networkStatusLive.postValue(NetworkStatus.DONE)
         }
 
     }
 
-    fun overrideDB(
+    private fun overrideDB(
         rocketList: List<RocketEntity>,
         onSaved: () -> Unit
     ) {
@@ -105,13 +105,13 @@ class RocketRepo(
             })
     }
 
-    fun onSuccessStored(
+    private fun onSuccessStored(
         response: List<RocketEntity>,
         callback: (rockets: List<RocketEntity>) -> Unit
     ) {
         if (response.isNotEmpty()) {
             callback(response)
-            networkStatusLive.postValue(NetworkStatus.SUCCESS)
+            networkStatusLive.postValue(NetworkStatus.DONE)
         } else
             getOnlineRockets(callback)
     }

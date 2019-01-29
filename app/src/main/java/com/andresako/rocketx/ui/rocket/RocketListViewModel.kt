@@ -32,7 +32,6 @@ class RocketListViewModel(
 
 
     override fun isFirstTime(): Boolean {
-//        if (it) prefsHelper.storeIsFirstTime(false)
         return false
     }
 
@@ -52,17 +51,22 @@ class RocketListViewModel(
 
     override fun getNetworkStatus() = this.networkStatus
 
-    private fun updateLiveData(rockets: List<RocketEntity>, filterOn: Boolean) {
+    private fun updateLiveData(
+        rockets: List<RocketEntity>,
+        filterOn: Boolean
+    ) {
         rocketsMutableLive.postValue(filterResults(rockets, filterOn))
     }
 
-    private fun filterResults(rockets: List<RocketEntity>, filterOn: Boolean):
-            List<RocketEntity> =
+    private fun filterResults(
+        rockets: List<RocketEntity>,
+        filterOn: Boolean
+    ): List<RocketEntity> =
         if (filterOn) rockets.filter { rocket -> rocket.active }.toMutableList()
         else rockets
 
-    private fun getDataFromRepo(forceRefresh: Boolean) =
-        rocketRepo.getRockets(forceRefresh) {
+    private fun getDataFromRepo(refresh: Boolean) =
+        rocketRepo.getRockets(refresh) {
             rockets = it
             updateLiveData(rockets, filterOn)
         }

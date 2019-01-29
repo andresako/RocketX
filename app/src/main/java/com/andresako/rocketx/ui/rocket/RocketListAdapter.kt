@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.rocket_list_item.view.*
 
 class RocketListAdapter(
     private val rocketList: MutableList<RocketEntity>,
-    private val onClick: (String, String, String) -> Unit
+    private val onClick: (String, String) -> Unit
 ) : RecyclerView.Adapter<RocketViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RocketViewHolder {
         return RocketViewHolder(
@@ -36,10 +36,10 @@ class RocketListAdapter(
 
 class RocketViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    fun bindView(rocket: RocketEntity, onClick: (String, String, String) -> Unit) = with(itemView) {
+    fun bindView(rocket: RocketEntity, onClick: (String, String) -> Unit) = with(itemView) {
         rocketName.text = rocket.rocketName
         rocketCountry.text = rocket.country
         rocketEnginesCount.text = itemView.context.getString(R.string.engines, rocket.numberOfEngines)
-        setOnClickListener { onClick(rocket.rocketId, rocket.rocketName, rocket.description) }
+        setOnClickListener { onClick(rocket.rocketId, rocket.description) }
     }
 }

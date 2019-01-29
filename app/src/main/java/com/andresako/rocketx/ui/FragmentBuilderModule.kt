@@ -16,7 +16,7 @@ abstract class FragmentBuilderModule {
     @Binds
     @IntoMap
     @ClassKey(RocketListFragment::class)
-    internal abstract fun bindHomeFragmentInjectorFactory(
+    internal abstract fun bindRocketsFragmentInjectorFactory(
         builder: RocketListSubComponent.Builder
     ): AndroidInjector.Factory<*>
 

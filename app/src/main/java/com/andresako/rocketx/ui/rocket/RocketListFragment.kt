@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -58,42 +57,38 @@ class RocketListFragment : BaseFragment() {
         rocketsRecycler.adapter = listAdapter
     }
 
-    fun goToLaunch(rocketId: String, rocketName: String, description: String) {
-        mainCallback.goToFragment(LaunchDetailsFragment.newInstance(rocketId, rocketName, description))
+    private fun goToLaunch(rocketId: String, description: String) {
+        mainCallback.goToFragment(LaunchDetailsFragment.newInstance(rocketId, description))
     }
 
-    fun updateRocketList(rockets: List<RocketEntity>) {
+    private fun updateRocketList(rockets: List<RocketEntity>) {
         listAdapter?.updateList(rockets)
     }
 
-    fun onNetworkStateChange(status: NetworkStatus) {
+    private fun onNetworkStateChange(status: NetworkStatus) {
         if (rocketsSwipeRefresh.isRefreshing) updateStateWhenRefreshing(status)
         else updateState(status)
     }
 
-    fun updateStateWhenRefreshing(networkStatus: NetworkStatus) {
+    private fun updateStateWhenRefreshing(networkStatus: NetworkStatus) {
         if (networkStatus.status != Status.RUNNING) {
             rocketsSwipeRefresh.isRefreshing = false
-//            if (networkStatus.status == Status.FAILED)
-//                display some failure
         }
     }
 
-    fun updateState(networkState: NetworkStatus) =
+    private fun updateState(networkState: NetworkStatus) =
         when (networkState.status) {
             Status.RUNNING -> showProgress()
-            Status.SUCCESS -> hideProgress()
-            Status.FAILED -> {
-                hideProgress()
-                Toast.makeText(context, networkState.msg!!, Toast.LENGTH_SHORT)
-            }
+            Status.DONE -> hideProgress()
+            Status.FAILED -> hideProgress()
+
         }
 
-    fun showProgress() {
+    private fun showProgress() {
         rocketsProgress.visibility = View.VISIBLE
     }
 
-    fun hideProgress() {
+    private fun hideProgress() {
         rocketsProgress.visibility = View.INVISIBLE
     }
 }

@@ -18,10 +18,10 @@ interface LaunchDetailsViewModelInterface {
 }
 
 class LaunchDetailsViewModel(
-    val launchRepo: LaunchRepo
+    private val launchRepo: LaunchRepo
 ) : ViewModel(), LaunchDetailsViewModelInterface {
 
-    val launchesMutableLive = MutableLiveData<List<LaunchEntity>>()
+    private val launchesMutableLive = MutableLiveData<List<LaunchEntity>>()
     private val networkStatus = launchRepo.getNetworkStatusData()
 
     override fun getLaunches(): MutableLiveData<List<LaunchEntity>> {

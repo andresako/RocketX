@@ -44,10 +44,4 @@ class RocketXAppModule {
         )
             .build()
     }
-
-//    @Singleton
-//    @Provides
-//    fun getSharedPrefsUtil(context: Context): SharedPrefsHelper {
-//        return SharedPrefsHelperImpl(context)
-//    }
 }

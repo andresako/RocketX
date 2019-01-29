@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,21 +21,20 @@ class LaunchDetailsFragment : BaseFragment() {
 
     @Inject
     lateinit var viewModel: LaunchDetailsViewModel
-    lateinit var rocketId: String
 
-    var adapter: LaunchDetailsAdapter? = null
+    private lateinit var rocketId: String
+    private lateinit var rocketDesc: String
 
+    private var adapter: LaunchDetailsAdapter? = null
 
     companion object {
         fun newInstance(
             rocketId: String,
-            rocketName: String,
             rocketDesc: String
         ): LaunchDetailsFragment {
             return LaunchDetailsFragment().apply {
                 val bundle = Bundle()
                 bundle.putString("ROCKET_ID", rocketId)
-                bundle.putString("ROCKET_NAME", rocketName)
                 bundle.putString("ROCKET_DESC", rocketDesc)
                 arguments = bundle
             }
@@ -48,6 +46,7 @@ class LaunchDetailsFragment : BaseFragment() {
         super.onAttach(context)
 
         rocketId = arguments?.getString("ROCKET_ID") ?: throw RuntimeException("Missing Rocket_ID argument")
+        rocketDesc = arguments?.getString("ROCKET_DESC") ?: throw RuntimeException("Missing Rocket_Desc argument")
 
         viewModel.getLaunches().observe(this, Observer { updateLaunchesList(it) })
         viewModel.getNetworkStatus().observe(this, Observer { onNetworkStateChange(it!!) })
@@ -63,43 +62,39 @@ class LaunchDetailsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val description = arguments?.getString("ROCKET_DESC") ?: throw RuntimeException("Missing Rocket_Desc argument")
-
-        initUI(description)
+        initUI()
 
         viewModel.loadLaunches(rocketId, false)
     }
 
-    fun initUI(description: String) {
-        launchDesc.text = description
+    private fun initUI() {
+        launchDesc.text = rocketDesc
+
         adapter = LaunchDetailsAdapter(mutableListOf())
         launchRecycler.layoutManager = LinearLayoutManager(context!!, RecyclerView.VERTICAL, false)
         launchRecycler.adapter = adapter
     }
 
-    fun updateLaunchesList(launchesList: List<LaunchEntity>) {
+    private fun updateLaunchesList(launchesList: List<LaunchEntity>) {
         adapter?.updateLaunches(launchesList)
     }
 
-    fun onNetworkStateChange(status: NetworkStatus) {
+    private fun onNetworkStateChange(status: NetworkStatus) {
         updateState(status)
     }
 
-    fun updateState(networkState: NetworkStatus) =
+    private fun updateState(networkState: NetworkStatus) =
         when (networkState.status) {
             Status.RUNNING -> showProgress()
-            Status.SUCCESS -> hideProgress()
-            Status.FAILED -> {
-                hideProgress()
-                Toast.makeText(context, networkState.msg!!, Toast.LENGTH_SHORT)
-            }
+            Status.DONE -> hideProgress()
+            Status.FAILED -> hideProgress()
         }
 
-    fun showProgress() {
+    private fun showProgress() {
         launchProgress.visibility = View.VISIBLE
     }
 
-    fun hideProgress() {
+    private fun hideProgress() {
         launchProgress.visibility = View.INVISIBLE
     }
 
