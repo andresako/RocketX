@@ -1,5 +1,15 @@
 <resources>
     <string name="app_name">RocketX</string>
     <string name="error">Something went wrong.</string>
-    <string name="engines">%1$d engines</string>
+
+    <string name="rocket_name">Name: %1$s</string>
+    <string name="rocket_country">Country: %1$s</string>
+    <string name="rocket_engines">Engines count: %1$d</string>
+
+    <string name="mission_name">Mission: %1$s</string>
+    <string name="mission_date">Date: %1$s</string>
+    <string name="mission_success">Successful!!</string>
+    <string name="mission_fail">Failed…</string>
+
+    <string name="filter_text">Only Actives</string>
 </resources>

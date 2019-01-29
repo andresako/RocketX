@@ -2,9 +2,10 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginLeft="20dp"
+          android:paddingLeft="@dimen/base_3_dp"
           android:textStyle="bold"
           android:textAllCaps="true"
-          android:textSize="22sp">
+          android:textSize="@dimen/big_sp"
+          android:background="@color/colorPrimary">
 
 </TextView>

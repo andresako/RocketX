@@ -51,7 +51,15 @@ class RocketListFragment : BaseFragment() {
         viewModel.loadRockets(false)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewFilter.visibility = View.GONE
+    }
+
     private fun initUI() {
+
+        viewFilter.visibility = View.VISIBLE
+
         listAdapter = RocketListAdapter(mutableListOf(), this::goToLaunch)
         rocketsRecycler.layoutManager = LinearLayoutManager(context!!, RecyclerView.VERTICAL, false)
         rocketsRecycler.adapter = listAdapter
@@ -67,28 +75,12 @@ class RocketListFragment : BaseFragment() {
 
     private fun onNetworkStateChange(status: NetworkStatus) {
         if (rocketsSwipeRefresh.isRefreshing) updateStateWhenRefreshing(status)
-        else updateState(status)
+        else mainCallback.updateState(status)
     }
 
     private fun updateStateWhenRefreshing(networkStatus: NetworkStatus) {
         if (networkStatus.status != Status.RUNNING) {
             rocketsSwipeRefresh.isRefreshing = false
         }
-    }
-
-    private fun updateState(networkState: NetworkStatus) =
-        when (networkState.status) {
-            Status.RUNNING -> showProgress()
-            Status.DONE -> hideProgress()
-            Status.FAILED -> hideProgress()
-
-        }
-
-    private fun showProgress() {
-        rocketsProgress.visibility = View.VISIBLE
-    }
-
-    private fun hideProgress() {
-        rocketsProgress.visibility = View.INVISIBLE
     }
 }

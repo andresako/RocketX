@@ -37,9 +37,9 @@ class RocketListAdapter(
 class RocketViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bindView(rocket: RocketEntity, onClick: (String, String) -> Unit) = with(itemView) {
-        rocketName.text = rocket.rocketName
-        rocketCountry.text = rocket.country
-        rocketEnginesCount.text = itemView.context.getString(R.string.engines, rocket.numberOfEngines)
+        rocketName.text = itemView.context.getString(R.string.rocket_name, rocket.rocketName)
+        rocketCountry.text = itemView.context.getString(R.string.rocket_country, rocket.country)
+        rocketEnginesCount.text = itemView.context.getString(R.string.rocket_engines, rocket.numberOfEngines)
         setOnClickListener { onClick(rocket.rocketId, rocket.description) }
     }
 }

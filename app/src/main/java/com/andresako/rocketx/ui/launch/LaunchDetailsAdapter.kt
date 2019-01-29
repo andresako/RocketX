@@ -79,11 +79,13 @@ class DateViewHolder(private val view: TextView) : RecyclerView.ViewHolder(view)
 
 class LaunchViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
     fun bind(launch: LaunchEntity) = with(view) {
-        val success = launch.launchSuccess.toString()
+        val success = launch.launchSuccess
+        val shortDate = launch.launchDateUtc.substring(0, 10)
 
-        launchMissionName.text = launch.missionName
-        launchDate.text = launch.launchDateUtc
-        launchSuccess.text = success
+        launchMissionName.text = itemView.context.getString(R.string.mission_name, launch.missionName)
+        launchDate.text = itemView.context.getString(R.string.mission_date, shortDate)
+        launchSuccess.text =
+                itemView.context.getString(if (success) R.string.mission_success else R.string.mission_fail)
     }
 }
 

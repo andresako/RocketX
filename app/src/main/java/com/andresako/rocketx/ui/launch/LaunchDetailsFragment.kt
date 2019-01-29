@@ -9,8 +9,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andresako.rocketx.R
-import com.andresako.rocketx.data.NetworkStatus
-import com.andresako.rocketx.data.Status
 import com.andresako.rocketx.data.room.entity.LaunchEntity
 import com.andresako.rocketx.ui.base.BaseFragment
 import dagger.android.support.AndroidSupportInjection
@@ -49,7 +47,7 @@ class LaunchDetailsFragment : BaseFragment() {
         rocketDesc = arguments?.getString("ROCKET_DESC") ?: throw RuntimeException("Missing Rocket_Desc argument")
 
         viewModel.getLaunches().observe(this, Observer { updateLaunchesList(it) })
-        viewModel.getNetworkStatus().observe(this, Observer { onNetworkStateChange(it!!) })
+        viewModel.getNetworkStatus().observe(this, Observer { mainCallback.updateState(it!!) })
     }
 
     override fun onCreateView(
@@ -78,24 +76,4 @@ class LaunchDetailsFragment : BaseFragment() {
     private fun updateLaunchesList(launchesList: List<LaunchEntity>) {
         adapter?.updateLaunches(launchesList)
     }
-
-    private fun onNetworkStateChange(status: NetworkStatus) {
-        updateState(status)
-    }
-
-    private fun updateState(networkState: NetworkStatus) =
-        when (networkState.status) {
-            Status.RUNNING -> showProgress()
-            Status.DONE -> hideProgress()
-            Status.FAILED -> hideProgress()
-        }
-
-    private fun showProgress() {
-        launchProgress.visibility = View.VISIBLE
-    }
-
-    private fun hideProgress() {
-        launchProgress.visibility = View.INVISIBLE
-    }
-
 }
