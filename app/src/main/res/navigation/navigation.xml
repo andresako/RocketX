@@ -7,7 +7,7 @@
     <fragment android:id="@+id/rocketListFragment"
               android:name="com.andresako.rocketx.ui.rocket.RocketListFragment"
               android:label="rocket_list_fragment" tools:layout="@layout/rocket_list_fragment"/>
-    <fragment android:id="@+id/rocketDetailsFragment"
+    <fragment android:id="@+id/launchDetailsFragment"
               android:name="com.andresako.rocketx.ui.launch.LaunchDetailsFragment"
-              android:label="rocket_details_fragment" tools:layout="@layout/launch_details_fragment"/>
+              android:label="LaunchDetailsFragment"/>
 </navigation>

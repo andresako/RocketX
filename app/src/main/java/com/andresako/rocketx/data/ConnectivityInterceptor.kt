@@ -11,7 +11,7 @@ class ConnectivityInterceptor(private val context: Context) : Interceptor {
         if (isConnected()) {
             return chain.proceed(chain.request())
         } else {
-            throw NoInternetException()
+            throw RuntimeException("You are not connected to internet")
         }
     }
 
@@ -22,5 +22,3 @@ class ConnectivityInterceptor(private val context: Context) : Interceptor {
         return activeNetwork != null && activeNetwork.isConnected
     }
 }
-
-class NoInternetException : RuntimeException("You are not connected to internet")

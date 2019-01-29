@@ -1,5 +1,6 @@
 package com.andresako.rocketx.ui
 
+import com.andresako.rocketx.ui.launch.LaunchesDetailsFragmentSubComponent
 import com.andresako.rocketx.ui.rocket.RocketListSubComponent
 import com.andresako.rocketx.utils.ActivityScope
 import dagger.Module
@@ -21,7 +22,8 @@ interface MainActivitySubComponent : AndroidInjector<MainActivity> {
 
 @Module(
     subcomponents = [
-        RocketListSubComponent::class
+        RocketListSubComponent::class,
+        LaunchesDetailsFragmentSubComponent::class
     ]
 )
 class MainActivityModule

@@ -1,5 +1,7 @@
 package com.andresako.rocketx.ui
 
+import com.andresako.rocketx.ui.launch.LaunchDetailsFragment
+import com.andresako.rocketx.ui.launch.LaunchesDetailsFragmentSubComponent
 import com.andresako.rocketx.ui.rocket.RocketListFragment
 import com.andresako.rocketx.ui.rocket.RocketListSubComponent
 import dagger.Binds
@@ -18,10 +20,10 @@ abstract class FragmentBuilderModule {
         builder: RocketListSubComponent.Builder
     ): AndroidInjector.Factory<*>
 
-//    @Binds
-//    @IntoMap
-//    @ClassKey(LaunchDetailsFragment::class)
-//    internal abstract fun bindLaunchesFragmentInjectorFactory(
-//        builder: LaunchDetailsSubComponent.Builder
-//    ): AndroidInjector.Factory<*>
+    @Binds
+    @IntoMap
+    @ClassKey(LaunchDetailsFragment::class)
+    internal abstract fun bindLaunchesFragmentInjectorFactory(
+        builder: LaunchesDetailsFragmentSubComponent.Builder
+    ): AndroidInjector.Factory<*>
 }

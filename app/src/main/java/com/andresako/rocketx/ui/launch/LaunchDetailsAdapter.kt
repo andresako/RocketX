@@ -13,9 +13,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class LaunchDetailsAdapter(
-    val launchList: MutableList<Any>,
-    val description: String
+    val launchList: MutableList<Any>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    val adapterList = mutableListOf<Any>()
 
     companion object {
         const val DATE = 0
@@ -29,6 +30,13 @@ class LaunchDetailsAdapter(
             else -> throw RuntimeException("Error inflating view")
         }
 
+    override fun getItemViewType(position: Int): Int =
+        when (launchList[position]) {
+            is LaunchHeader -> DATE
+            is LaunchEntity -> LAUNCH
+            else -> throw RuntimeException("Wrong Item view type")
+        }
+
 
     override fun getItemCount(): Int {
         return launchList.size
@@ -36,7 +44,7 @@ class LaunchDetailsAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is DateViewHolder -> holder.bind(launchList[position] as String)
+            is DateViewHolder -> holder.bind(launchList[position] as LaunchHeader)
             is LaunchViewHolder -> holder.bind(launchList[position] as LaunchEntity)
         }
     }
@@ -45,24 +53,46 @@ class LaunchDetailsAdapter(
         return LayoutInflater.from(parent.context).inflate(layoutRes, parent, false)
     }
 
+    fun updateLaunches(launchList: List<LaunchEntity>) {
+        adapterList.clear()
+        launchList.sortedBy { launch -> launch.launchDateUnix }
+
+        var count = 0
+        for (launch in launchList) {
+            if (launch.launchYear > count) {
+                count = launch.launchYear
+                adapterList.add(LaunchHeader(count.toString()))
+            }
+            adapterList.add(launch)
+        }
+
+        this.launchList.clear()
+        this.launchList.addAll(adapterList)
+
+        notifyDataSetChanged()
+    }
+
 }
 
 class DateViewHolder(val view: TextView) : RecyclerView.ViewHolder(view) {
-    fun bind(header: String) {
-        view.text = header
+    fun bind(header: LaunchHeader) {
+        view.text = header.year
     }
 }
 
 class LaunchViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
     fun bind(launch: LaunchEntity) = with(view) {
-        val date = launch.launchDateUtc.toDate().formatTo("dd MMM yyyy")
         val success = launch.launchSuccess.toString()
 
         launchMissionName.text = launch.missionName
-        launchDate.text = date
+        launchDate.text = launch.launchDateUtc
         launchSuccess.text = success
     }
 }
+
+data class LaunchHeader(
+    val year: String
+)
 
 
 fun String.toDate(dateFormat: String = "yyyy-MM-dd HH:mm:ss", timeZone: TimeZone = TimeZone.getTimeZone("UTC")): Date {

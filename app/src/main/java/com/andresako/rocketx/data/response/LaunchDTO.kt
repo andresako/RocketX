@@ -11,6 +11,8 @@ data class LaunchDTO(
     val launchYear: Int,
     @SerializedName("launch_date_unix")
     val launchDateUnix: Int,
+    @SerializedName("launch_date_utc")
+    val launchDateUtc: String,
     @SerializedName("rocket")
     val rocket: RocketDetails,
     @SerializedName("launch_success")
@@ -20,8 +22,6 @@ data class LaunchDTO(
 )
 
 data class Links(
-    @SerializedName("mission_patch")
-    val missionPatch: String,
     @SerializedName("mission_patch_small")
     val missionPatchSmall: String
 )

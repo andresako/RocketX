@@ -3,9 +3,9 @@ package com.andresako.rocketx.ui
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.andresako.rocketx.R
+import com.andresako.rocketx.ui.rocket.RocketListFragment
 import dagger.android.AndroidInjection
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -20,8 +20,16 @@ class MainActivity : DaggerAppCompatActivity(), MainCallback {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        navController = Navigation.findNavController(this, R.id.nav_host_fragment)
-        NavigationUI.setupActionBarWithNavController(this, navController)
+//        navController = Navigation.findNavController(this, R.id.nav_host_fragment)
+//        NavigationUI.setupActionBarWithNavController(this, navController)
+
+        if (savedInstanceState == null) {
+            val fragment = RocketListFragment()
+            supportFragmentManager
+                .beginTransaction()
+                .add(R.id.nav_host_fragment, fragment)
+                .commit()
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
