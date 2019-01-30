@@ -45,10 +45,6 @@ class RocketListFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initUI()
-
-        rocketsSwipeRefresh.setOnRefreshListener { viewModel.loadRockets(true) }
-
-        viewModel.loadRockets(false)
     }
 
     override fun onDestroyView() {
@@ -63,10 +59,15 @@ class RocketListFragment : BaseFragment() {
         listAdapter = RocketListAdapter(mutableListOf(), this::goToLaunch)
         rocketsRecycler.layoutManager = LinearLayoutManager(context!!, RecyclerView.VERTICAL, false)
         rocketsRecycler.adapter = listAdapter
+
+        switchFilter.setOnCheckedChangeListener { _, isChecked -> viewModel.getActiveRockets(isChecked) }
+        rocketsSwipeRefresh.setOnRefreshListener { viewModel.loadRockets(true) }
+
+        viewModel.loadRockets(false)
     }
 
-    private fun goToLaunch(rocketId: String, description: String) {
-        mainCallback.goToFragment(LaunchDetailsFragment.newInstance(rocketId, description))
+    private fun goToLaunch(rocketId: String, name: String, description: String) {
+        mainCallback.goToFragment(LaunchDetailsFragment.newInstance(rocketId, name, description))
     }
 
     private fun updateRocketList(rockets: List<RocketEntity>) {

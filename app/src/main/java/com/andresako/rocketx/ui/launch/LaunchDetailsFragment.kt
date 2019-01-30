@@ -21,6 +21,7 @@ class LaunchDetailsFragment : BaseFragment() {
     lateinit var viewModel: LaunchDetailsViewModel
 
     private lateinit var rocketId: String
+    private lateinit var rocketName: String
     private lateinit var rocketDesc: String
 
     private var adapter: LaunchDetailsAdapter? = null
@@ -28,11 +29,13 @@ class LaunchDetailsFragment : BaseFragment() {
     companion object {
         fun newInstance(
             rocketId: String,
+            rocketName: String,
             rocketDesc: String
         ): LaunchDetailsFragment {
             return LaunchDetailsFragment().apply {
                 val bundle = Bundle()
                 bundle.putString("ROCKET_ID", rocketId)
+                bundle.putString("ROCKET_NAME", rocketName)
                 bundle.putString("ROCKET_DESC", rocketDesc)
                 arguments = bundle
             }
@@ -44,6 +47,7 @@ class LaunchDetailsFragment : BaseFragment() {
         super.onAttach(context)
 
         rocketId = arguments?.getString("ROCKET_ID") ?: throw RuntimeException("Missing Rocket_ID argument")
+        rocketName = arguments?.getString("ROCKET_NAME") ?: throw RuntimeException("Missing Rocket_Name argument")
         rocketDesc = arguments?.getString("ROCKET_DESC") ?: throw RuntimeException("Missing Rocket_Desc argument")
 
         viewModel.getLaunches().observe(this, Observer { updateLaunchesList(it) })
@@ -61,16 +65,17 @@ class LaunchDetailsFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initUI()
-
-        viewModel.loadLaunches(rocketId, false)
     }
 
     private fun initUI() {
+        mainCallback.setTitle(rocketName)
         launchDesc.text = rocketDesc
 
         adapter = LaunchDetailsAdapter(mutableListOf())
         launchRecycler.layoutManager = LinearLayoutManager(context!!, RecyclerView.VERTICAL, false)
         launchRecycler.adapter = adapter
+
+        viewModel.loadLaunches(rocketId, false)
     }
 
     private fun updateLaunchesList(launchesList: List<LaunchEntity>) {

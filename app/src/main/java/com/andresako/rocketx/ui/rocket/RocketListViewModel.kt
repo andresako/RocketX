@@ -47,6 +47,10 @@ class RocketListViewModel(
     }
 
     override fun getActiveRockets(filterOn: Boolean) {
+        if (filterOn != this.filterOn) {
+            this.filterOn = filterOn
+            updateLiveData(rockets, filterOn)
+        }
     }
 
     override fun getNetworkStatus() = this.networkStatus
