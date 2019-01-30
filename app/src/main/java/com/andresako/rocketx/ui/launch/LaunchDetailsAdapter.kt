@@ -8,6 +8,8 @@ import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import com.andresako.rocketx.R
 import com.andresako.rocketx.data.room.entity.LaunchEntity
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.launch_details_item.view.*
 
 class LaunchDetailsAdapter(
@@ -86,6 +88,13 @@ class LaunchViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         launchDate.text = itemView.context.getString(R.string.mission_date, shortDate)
         launchSuccess.text =
                 itemView.context.getString(if (success) R.string.mission_success else R.string.mission_fail)
+        Glide.with(this)
+            .load(launch.missionPatchSmall)
+            .apply(
+                RequestOptions()
+                    .placeholder(R.mipmap.ic_launcher)
+            )
+            .into(launchImage)
     }
 }
 

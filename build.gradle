@@ -11,6 +11,7 @@ buildscript {
     ext.rxjava_version = '2.2.6'
     ext.mapstruct_version = '1.2.0.Final'
     ext.dagger2_version = '2.21'
+    ext.glide_version = '4.8.0'
 
     repositories {
         google()
