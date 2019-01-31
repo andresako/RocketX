@@ -31,9 +31,14 @@ class MainActivity : DaggerAppCompatActivity(), MainCallback {
 
     override fun goToFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.open_from_right, R.anim.close_to_right)
+            .setCustomAnimations(
+                R.anim.open_from_right,
+                R.anim.close_to_left,
+                R.anim.open_from_left,
+                R.anim.close_to_right
+            )
             .replace(R.id.nav_host_fragment, fragment)
-            .addToBackStack(fragment.tag)
+            .addToBackStack(null)
             .commit()
     }
 
